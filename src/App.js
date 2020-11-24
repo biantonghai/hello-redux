@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import {connect} from 'react-redux'
+import * as types from "./actions";
+import {bindActionCreators} from 'redux'
+import User from "./components/user";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+
+class App extends Component {
+  render() {
+    const {increment,decrement}=this.props
+    return (
+      <div className="container">
+        <h1 className="jumbotron-heading text-center">{this.props.counter}</h1>
+        <p className="text-center">
+          <button onClick={()=>increment()} className="btn btn-primary mr-2">Increase</button>
+          <button onClick={()=>decrement()} className="btn btn-danger mr-2">Decrease</button>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        <User/>
+      </div>
+    );
+  }
 }
-
-export default App;
+const mapStateToProps = (state)=>{
+  return {
+    counter:state.counter
+  }
+}
+const mapDispatchToProps = (dispatch)=>{
+  return bindActionCreators(types,dispatch)
+}
+export default connect(mapStateToProps,mapDispatchToProps)(App);
